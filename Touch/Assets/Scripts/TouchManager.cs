@@ -4,18 +4,15 @@ using UnityEngine;
 
 public class TouchManager : MonoBehaviour
 {
-
-    enum Gestures{none, determining, tap, longTap, drag, rotation, zoom, scale};
+    enum Gestures{none, determining, tap, drag, rotation, zoom, scale};
     Gestures currentGesture = Gestures.none;
 
     Vector3 startPos;
     Vector3 endPos;
-    float timer = 0f;
-    bool timerOn = false;
-    bool hasMoved;
     float touchZoomSpeed = 0.1f;
     float zoomMinBound = 0.1f;
     float zoomMaxBound = 179.9f;
+    float rotationRate = 3.0f;
     Vector2 t1;
     Vector2 t2;
 
@@ -25,6 +22,9 @@ public class TouchManager : MonoBehaviour
     IControllable objectHit;
     Renderer planeRenderer;
     float initialDistance;
+    Touch touch;
+    float timeTouchBegan = 0f;
+    float tapTimeThreshold = 0.5f; 
 
     // Start is called before the first frame update
     void Start()
@@ -40,9 +40,7 @@ public class TouchManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
-        switch(currentGesture)
+        switch (currentGesture)
         {
             case Gestures.none:
 
@@ -50,52 +48,92 @@ public class TouchManager : MonoBehaviour
                 if(Input.touchCount > 0)
                 {
                     currentGesture = Gestures.determining;
+                    timeTouchBegan = Time.time;
                 }
 
                 break;
 
             case Gestures.determining:
 
-                //conditions for a tap 
+                Vector2 lastPos = touch.position;
 
-
-                //conditions for a long tap
-
-
-                //conditions for a drag
-
-
-                //conditions for rotation
-                
-
-
-                //conditions for a zoom
-                if (Input.touchCount == 2)
+                //Toouch gone from the screen 
+                if(Input.touchCount < 1)
                 {
+                    currentGesture = Gestures.none;
+                }
+
+                //touch count of 1 
+                if(Input.touchCount == 1)
+                {
+                    //conditions for a tap 
+                    if (Vector2.Distance(lastPos, touch.position) < 5 && tapTimeThreshold <= Time.time - timeTouchBegan && touch.phase == TouchPhase.Ended)
+                    {
+                        currentGesture = Gestures.tap;
+                    }
+
+
+                    //conditions for a drag
+                    if (touch.phase == TouchPhase.Moved && selectedObject != null)
+                    {
+                        currentGesture = Gestures.drag;
+                    }
+
+                }//end of touch count == 1
+
+                //touch count of 2
+                if(Input.touchCount == 2)
+                {
+                    //conditions for rotation
+                    if (touch.phase == TouchPhase.Moved && selectedObject != null)
+                    {
+                        currentGesture = Gestures.rotation;
+                    }
+
+                    //conditions for a zoom
+                    if (selectedObject == null)
+                    {
                         currentGesture = Gestures.zoom;
 
-                }//end of touchCount ==2
+                    }//end of zoom condition 
 
-                //conditions for a scale
-                if(Input.touchCount == 2 && selectedObject != null)
-                {
-                    currentGesture = Gestures.scale;
-                    initialDistance = (t1 - t2).sqrMagnitude;
-                }
+                    //conditions for a scale
+                    if (selectedObject != null)
+                    {
+                        initialDistance = (t1 - t2).sqrMagnitude;
+                        currentGesture = Gestures.scale;
+                    }
+
+                }//end of if input touch == 2
 
 
                 break;
 
             case Gestures.tap:
+                print("Its a tap!");
+
+                currentGesture = Gestures.none;
                 break;
 
-            case Gestures.longTap:
-                break;
 
             case Gestures.drag:
+                //Method1
+                Ray newPositionRay = Camera.main.ScreenPointToRay(Input.touches[0].position);
+                selectedObject.moveTo(newPositionRay.GetPoint(startingDistanceToSelectedObject));
+                //Method2
+                Vector3 point = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, 10));
+                selectedObject.moveTo(point);
+
+                currentGesture = Gestures.none;
                 break;
 
             case Gestures.rotation:
+                float val1 = touch.deltaPosition.y * rotationRate;
+                float val2 = -touch.deltaPosition.x * rotationRate;
+                Vector3 v = new Vector3(val1, val2, 0);
+                selectedObject.rotateObject(v);
+
+                currentGesture = Gestures.none;
                 break;
 
             case Gestures.zoom:
@@ -112,6 +150,7 @@ public class TouchManager : MonoBehaviour
                 float deltaDistance = oldTouchDistance - currentTouchDistance;
                 zoom(deltaDistance, touchZoomSpeed);
 
+                currentGesture = Gestures.none;
                 break;
 
             case Gestures.scale:
@@ -126,6 +165,7 @@ public class TouchManager : MonoBehaviour
 
                 selectedObject.scale(percentageChange);
 
+                currentGesture = Gestures.none;
                 break;
         }
 
@@ -133,34 +173,28 @@ public class TouchManager : MonoBehaviour
         if (Input.touchCount > 0)
         {
 
-            Touch touch = Input.GetTouch(0);
+             touch = Input.GetTouch(0);
 
             switch (touch.phase)
             {
                 case TouchPhase.Began:
-                    timerOn = true;
                     startPos = touch.position;
-                    hasMoved = false;
                     break;
 
                 case TouchPhase.Moved:
-                    hasMoved = true;
-                    Ray newPositionRay = Camera.main.ScreenPointToRay(Input.touches[0].position);
+                   // Ray newPositionRay = Camera.main.ScreenPointToRay(Input.touches[0].position);
                     //Method1
-                    selectedObject.moveTo(newPositionRay.GetPoint(startingDistanceToSelectedObject));
+                   // selectedObject.moveTo(newPositionRay.GetPoint(startingDistanceToSelectedObject));
                     //Method2
-                    Vector3 point = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, 10));
-                    selectedObject.moveTo(point);
+                    //Vector3 point = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, 10));
+                  //  selectedObject.moveTo(point);
                     break;
 
                 case TouchPhase.Ended:
-                    timerOn = false;
                     endPos = touch.position;
-                    isaTap(hasMoved, timer);
                     break;
-            }
+            }//end of switch touch phase
 
- 
 
             RaycastHit info;
             Ray ray;
@@ -176,34 +210,24 @@ public class TouchManager : MonoBehaviour
                 {
                     objectHit.youveBeenTouched();
                     selectedObject = objectHit;
-                    startingDistanceToSelectedObject = Vector3.Distance(Camera.main.transform.position, info.transform.position);                    
+                    startingDistanceToSelectedObject = Vector3.Distance(Camera.main.transform.position, info.transform.position);
+                    selectedObject.objectSelected();
+                }
+
+                else
+                {
+                    if(selectedObject != null)
+                    {
+                        selectedObject.objectDeselected();
+                    }
+                    
+                    selectedObject = null;
                 }
             }//end of raycast
-
-            if (timerOn)
-            {
-                timer += Time.deltaTime;
-            }//end of timerON
-
 
         }//end of input.touchCount
 
     }//end of update()
-
-
-    public void isaTap(bool hasMoved, float time)
-    {
-        if (!hasMoved && time <= 0.5f)
-        {
-            print("Its a tap!");
-        }
-
-        else
-        {
-            print("Not a tap");
-        }
-
-    }//end of isaTap()
 
     public void zoom(float deltaMagnitudeDiff, float speed)
     {

@@ -9,5 +9,11 @@ interface IControllable
     void moveTo(Vector3 destination);
 
     void scale(float percentageChange);
+
+    void rotateObject(Vector3 v);
+
+    void objectSelected();
+
+    void objectDeselected();
 }
 
