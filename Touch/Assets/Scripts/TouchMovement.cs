@@ -4,11 +4,30 @@ using UnityEngine;
 
 public class TouchMovement : MonoBehaviour, IControllable
 {
+    Renderer objectRenderer;
+    Color32 objectColour;
 
-    /*public void moveTo(Vector3 destination)
+
+    void Start()
     {
-        transform.position = destination;
-    }*/
+        
+        objectRenderer = GetComponent<Renderer>();
+        objectColour = GetComponent<Renderer>().material.color;
+
+
+        if (SystemInfo.supportsGyroscope)
+        {
+            Debug.Log("gyro");
+        }
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
 
     public void moveTo(Vector3 destination)
     {
@@ -16,6 +35,21 @@ public class TouchMovement : MonoBehaviour, IControllable
         Vector3 touchedPos = Camera.main.ScreenToWorldPoint(destination);
         // lerp and set the position of the current object to that of the touch, but smoothly over time.
         transform.position = Vector3.Lerp(transform.position, touchedPos, Time.deltaTime);
+    }
+
+    public void objectDeselected()
+    {
+        objectRenderer.material.SetColor("_Color", objectColour);
+    }
+
+    public void objectSelected()
+    {
+        objectRenderer.material.SetColor("_Color", Color.yellow);
+    }
+
+    public void rotateObject(Vector3 v)
+    {
+        transform.Rotate(v, Space.World);
     }
 
     public void scale(float percentageChange)
@@ -28,21 +62,10 @@ public class TouchMovement : MonoBehaviour, IControllable
 
     public void youveBeenTouched()
     {
-        transform.position += Vector3.down;
+        
     }
-
-
 
     // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
 
 
-    }
 }
