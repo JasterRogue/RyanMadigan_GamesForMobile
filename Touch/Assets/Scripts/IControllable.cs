@@ -4,6 +4,8 @@ using UnityEngine;
 
 interface IControllable
 {
+    GameObject gameObject { get; }
+
     void youveBeenTouched();
 
     void moveTo(Vector3 destination);
