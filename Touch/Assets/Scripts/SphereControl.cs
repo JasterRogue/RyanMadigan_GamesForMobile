@@ -7,14 +7,15 @@ public class SphereControl : MonoBehaviour, IControllable
     private Vector3 dragPosition;
     Renderer objectRenderer;
     Color32 objectColour;
+    float initialDistance; 
 
 
-    public void moveTo( Vector3 destination)
+    public void moveTo(Vector3 pos)
     {
-        // get the touch position from the screen touch to world point
-        Vector3 touchedPos = Camera.main.ScreenToWorldPoint(destination);
-        // lerp and set the position of the current object to that of the touch, but smoothly over time.
-        transform.position = Vector3.Lerp(transform.position, touchedPos, Time.deltaTime);
+        //Drag method 2
+        Ray newPositionRay = Camera.main.ScreenPointToRay(pos);
+        Vector3 destination = newPositionRay.GetPoint(initialDistance);
+        dragPosition = destination;
     }
 
     public void objectDeselected()
@@ -24,6 +25,7 @@ public class SphereControl : MonoBehaviour, IControllable
 
     public void objectSelected()
     {
+        initialDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
         objectRenderer.material.SetColor("_Color", Color.yellow);
     }
 
