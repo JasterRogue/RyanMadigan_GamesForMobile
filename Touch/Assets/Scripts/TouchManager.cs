@@ -151,11 +151,11 @@ public class TouchManager : MonoBehaviour
 
                 float changeInDistance = newDistance - initialDistance;
 
-               if (Mathf.Approximately(initialDistance, 0))
+              /* if (Mathf.Approximately(initialDistance, 0))
                 {
                     //if bad 
                     break;
-                }
+                }*/
                     
                 float percentageChange = changeInDistance / initialDistance;
 
@@ -325,7 +325,7 @@ public class TouchManager : MonoBehaviour
 
         float  deltaDistance = oldTouchDistance - currentTouchDistance;
 
-        Debug.Log("Delta distance" + deltaDistance);
+       // Debug.Log("Delta distance" + deltaDistance);
 
         return deltaDistance; 
     }
