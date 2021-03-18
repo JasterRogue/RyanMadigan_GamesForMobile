@@ -1,0 +1,13 @@
+
+- Cube has the gyroscope on it
+- Capsule has the accelerometer 
+
+The different drag methods are implemented on each of the objects. The 3rd and
+4th method are somewhat similar so that's why there is only three. 
+
+Gestures are now determined through a method to make the code a bit neater. 
+It can usally get the correct gesture but the actual implementation of the gesture
+sometimes is a bit janky. 
+
+Reset Button resets the scene but causes the scene to look a lot darker for
+some reason ? 
