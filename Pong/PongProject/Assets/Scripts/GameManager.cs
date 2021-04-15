@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
 
     private void OnGUI()
     {
+        
         GUI.skin = layout;
         GUI.Label(new Rect(Screen.width / 2 - 150 - 12, 20, 100, 100), "" + PlayerScore1);
         GUI.Label(new Rect(Screen.width / 2 + 150 - 12, 20, 100, 100), "" + PlayerScore2);
@@ -59,7 +60,7 @@ public class GameManager : MonoBehaviour
 
         else if (PlayerScore2 == 10)
         {
-            GUI.Label(new Rect(Screen.width / 2 - 150, 200, 2000, 1000), "PLAYER ONE WINS");
+            GUI.Label(new Rect(Screen.width / 2 - 150, 200, 2000, 1000), "PLAYER TWO WINS");
             theBall.SendMessage("resetBall", null, SendMessageOptions.RequireReceiver);
         }
     }

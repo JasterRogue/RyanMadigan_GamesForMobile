@@ -46,16 +46,22 @@ public class BallControl : MonoBehaviour
     {
         rb2d.velocity = Vector2.zero;
         transform.position = Vector2.zero;
+
+        if (GameManager.PlayerScore1 != 10 || GameManager.PlayerScore2 != 10)
+        {
+            Invoke("goBall", 1);
+        }
+        
     }
 
     void restartGame()
     {
         resetBall();
 
-        myAdMob.RequestInterstitial();
-        
+        myAdMob.requestInterstetialGoogle();
 
-        
+        myAdMob.whichInterstetialToShow();
+
         Invoke("goBall", 1);
     }
 

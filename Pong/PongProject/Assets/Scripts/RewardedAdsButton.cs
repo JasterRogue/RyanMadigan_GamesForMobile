@@ -45,15 +45,11 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsListener
             ShowAd("");
             Debug.Log("Show reward ad");
         }
-
-        
-        print("Ad ready" + Advertisement.IsReady(mySurfacingId).ToString() + mySurfacingId);
     }
 
     // Implement a function for showing a rewarded video ad:
     void ShowRewardedVideo()
-    {
-        
+    {   
         Advertisement.Show(mySurfacingId);
     }
 
