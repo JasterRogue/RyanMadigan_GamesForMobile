@@ -19,12 +19,12 @@ public class PlayerControls : MonoBehaviour
     {
        transform.Translate(new Vector3(0, Input.acceleration.y, 0) * speed);
 
-        if(transform.position.y < -2.5)
+        if(transform.position.y < -3)
         {
             transform.position = new Vector3(-4, 0, 0);
         }
 
-        if(transform.position.y > 2.5)
+        if(transform.position.y > 3)
         {
             transform.position = new Vector3(-4, 0, 0);
         }

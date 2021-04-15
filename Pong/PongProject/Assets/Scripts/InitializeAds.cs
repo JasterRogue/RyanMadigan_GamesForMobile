@@ -10,11 +10,13 @@ public class InitializeAds : MonoBehaviour
     string gameId = "4042907";
     bool testMode = true;
     string surfacingId = "BannerAd1";
+    Button myButton;
 
     // Start is called before the first frame update
     void Start()
     {
         //Advertisement.AddListener(this);
+        
         Advertisement.Initialize(gameId, testMode);
         StartCoroutine(ShowBannerWhenInitialized());
     }
