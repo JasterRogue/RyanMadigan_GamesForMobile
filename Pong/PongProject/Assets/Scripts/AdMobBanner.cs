@@ -22,10 +22,14 @@ public class AdMobBanner : MonoBehaviour
     string bannerIDUnity = "Banner_Android";
     string vidIdUnity = "Rewarded_Android";
     public Button myButton;
+    public Image rewardImage; 
+
+    //public static adsEnabled; 
 
     // Start is called before the first frame update
     void Start()
     {
+        rewardImage.enabled = false;
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(initStatus => { });
         Advertisement.Initialize(gameId, testMode);
@@ -163,6 +167,7 @@ public class AdMobBanner : MonoBehaviour
     public void HandleUserEarnedReward(object sender, Reward args)
     {
         myComputerControl.lowerCPUSpeed();
+        rewardImage.enabled = true; 
     }
 
     IEnumerator showUnityBanner()
@@ -240,8 +245,8 @@ public class AdMobBanner : MonoBehaviour
         }
     }//OnUnityAdsDidFinish() ends
 
-    public void OnUnityAdsReady()
+   /* public void OnUnityAdsReady()
     {
         myButton.interactable = true;
-    }
+    }*/
 }

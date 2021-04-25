@@ -56,12 +56,23 @@ public class GameManager : MonoBehaviour
         {
             GUI.Label(new Rect(Screen.width / 2 - 150, 200, 2000, 1000), "PLAYER ONE WINS");
             theBall.SendMessage("resetBall", null, SendMessageOptions.RequireReceiver);
+
+            if (PlayerScore1 == 10 && PlayerScore2 == 9)
+            {
+                Social.ReportProgress(GPGSIds.achievement_clutching_out_the_win, 100f, null);
+            }
+
+            Wins.incrementWins();
+            Social.ReportProgress(GPGSIds.achievement_just_warming_up, 100f, null);
+
         }
 
         else if (PlayerScore2 == 10)
         {
             GUI.Label(new Rect(Screen.width / 2 - 150, 200, 2000, 1000), "PLAYER TWO WINS");
             theBall.SendMessage("resetBall", null, SendMessageOptions.RequireReceiver);
+
+            Social.ReportProgress(GPGSIds.achievement_its_the_end_of_the_world, 100f, null);
         }
     }
 }

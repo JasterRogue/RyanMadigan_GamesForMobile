@@ -24,7 +24,14 @@
 
 public static class GPGSIds
 {
-        public const string achievement_simple_pong = "CgkI5sOy6N8UEAIQAQ"; // <GPGSID>
+        public const string achievement_youre_a_natural = "CgkI5sOy6N8UEAIQAg"; // <GPGSID>
+        public const string leaderboard_total_wins = "CgkI5sOy6N8UEAIQBg"; // <GPGSID>
+        public const string achievement_clutching_out_the_win = "CgkI5sOy6N8UEAIQBQ"; // <GPGSID>
+        public const string achievement_you_want_a_medal_for_pushing_a_button = "CgkI5sOy6N8UEAIQBw"; // <GPGSID>
+        public const string achievement_its_the_end_of_the_world = "CgkI5sOy6N8UEAIQBA"; // <GPGSID>
+        public const string achievement_damn_youre_really_good_at_pushing_that_button = "CgkI5sOy6N8UEAIQCA"; // <GPGSID>
+        public const string achievement_just_warming_up = "CgkI5sOy6N8UEAIQAQ"; // <GPGSID>
+        public const string achievement_sorry_i_cant_hear_you_with_all_this_winning = "CgkI5sOy6N8UEAIQAw"; // <GPGSID>
 
 }
 

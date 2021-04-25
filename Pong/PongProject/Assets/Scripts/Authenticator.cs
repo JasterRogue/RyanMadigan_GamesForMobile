@@ -14,7 +14,6 @@ public class Authenticator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
 
         if(platform == null)
         {
@@ -36,8 +35,6 @@ public class Authenticator : MonoBehaviour
             else
             {
                 Debug.Log("Failed to log in");
-                testscript.showImage();
-           
             }
         });
         
